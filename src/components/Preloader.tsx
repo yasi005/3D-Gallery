@@ -130,7 +130,7 @@ export default function Preloader() {
           <Sparkle className={`${styles.star} ${styles.starMid}`} />
           <Sparkle className={styles.star} />
         </div>
-        <p className={styles.brand}>Jasmine</p>
+        <p className={styles.brand}>Yazmin</p>
         <div className={styles.track}>
           <div ref={fill} className={styles.fill} />
         </div>
