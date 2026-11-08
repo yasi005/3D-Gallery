@@ -1,79 +1,53 @@
 # Sable
 
-A small gallery of quiet things.
+### A small gallery of quiet things.
 
-Soft light, slow rooms, paintings that ask you to linger. Scroll through an editorial sequence of frames, then step into a walkable 3D room — footsteps on hard floors, ambient sound in the plaster, placards you can lean in to read.
+Sable is an atmospheric, scroll-driven art experience built for lingering. Move through a sequence of soft editorial scenes, watch paintings bend gently into view, and step inside a walkable 3D gallery where light, sound, and space become part of the exhibition.
 
-Built as a short, warm experience rather than a catalog.
+<p align="center">
+  <a href="https://gallery-tau-indol.vercel.app">
+    <strong>Visit the live gallery →</strong>
+  </a>
+</p>
 
----
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Three.js-3D-black?logo=threedotjs" alt="Three.js" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
+</p>
 
-## Run it locally
+> Built as a short, warm experience rather than a catalog.
 
-Node **20.9** or newer.
+## The experience
+
+- **Scroll-led storytelling** — A paced sequence of hero frames, statements, image studies, and a horizontal strip.
+- **A walkable room** — Enter a first-person 3D gallery, explore the space, and inspect the works on its walls.
+- **Living sound** — Ambient music, footsteps, and small interface sounds shape the room without demanding attention.
+- **Tactile motion** — WebGL image planes, distortion shaders, smooth scrolling, and restrained transitions.
+- **Considered defaults** — Responsive layouts, semantic structure, and reduced-motion support are built in.
+
+## Technology
+
+| Layer | Tools |
+| --- | --- |
+| Framework | Next.js 16, React 19, TypeScript |
+| 3D | Three.js, React Three Fiber, Drei |
+| Motion | GSAP, Lenis |
+| Styling | CSS Modules, Global CSS |
+| Hosting | Vercel |
+
+## Getting started
+
+### Prerequisites
+
+- Node.js **20.9 or newer**
+- npm
+
+### Installation
 
 ```bash
+git clone https://github.com/yasi005/3D-Gallery.git
+cd 3D-Gallery
 npm install
-npm run dev
-```
-
-Open [localhost:3000](http://localhost:3000). Scroll gently.
-
-```bash
-npm run build && npm start   # production
-npm run lint
-```
-
----
-
-## Deploy
-
-This is a standard Next.js app. Import the repo on [Vercel](https://vercel.com/new), keep the Next.js preset, and deploy. No environment variables are required for the demo as it stands.
-
----
-
-## What’s inside
-
-| | |
-|---|---|
-| **Scroll scenes** | Hero frames, a distortion gallery, a horizontal strip, a feature card |
-| **The room** | A first-person gallery you can walk — inspect works, open doors, change the light |
-| **Sound** | Generative ambient tracks, footsteps, soft UI chimes |
-| **Motion** | GSAP + Lenis, with reduced-motion respected |
-
-Stack: Next.js 16, React 19, React Three Fiber, GSAP, Lenis.
-
----
-
-## Making it yours
-
-**Images** live in `src/data/gallery.ts`. The sample set is public-domain painting via Wikimedia Commons — fine for a demo; for something lasting, drop files into `public/images/` and point `src` there.
-
-**Music** is optional. Add licensed audio under `public/music/` and list it in `src/data/playlist.ts`. That folder is gitignored on purpose — don’t commit recordings you don’t have the rights to share. With an empty playlist, the room keeps its built-in ambient pieces.
-
----
-
-## Layout
-
-```
-src/app/          routes & global styles
-src/components/   page sections & UI
-src/data/         gallery + playlist
-src/lib/          scroll & audio
-src/webgl/        the 3D room
-public/images/    your own artwork (optional)
-public/music/     your own audio (optional, ignored by git)
-```
-
----
-
-## License
-
-<<<<<<< HEAD
-Source code is MIT — see [LICENSE](./LICENSE). Sample images remain under their original public-domain status via Wikimedia Commons. 
-
-=======
-Code is [MIT](./LICENSE).
-
-The sample paintings remain public domain, via Wikimedia Commons. Any audio you add keeps whatever license it arrived with — that part is on you.
->>>>>>> b59445e (update read me)
