@@ -11,11 +11,11 @@ Sable is an atmospheric, scroll-driven art experience built for lingering. Move 
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js" />
-  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Three.js-3D-black?logo=threedotjs" alt="Three.js" />
-  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
+  <img src="https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=next.js&logoColor=ffffff" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-19-000000?style=flat-square&logo=react&logoColor=ffffff" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5-000000?style=flat-square&logo=typescript&logoColor=ffffff" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Three.js-3D-000000?style=flat-square&logo=threedotjs&logoColor=ffffff" alt="Three.js" />
+  <img src="https://img.shields.io/badge/License-MIT-000000?style=flat-square&logo=opensourceinitiative&logoColor=ffffff" alt="MIT License" />
 </p>
 
 > Built as a short, warm experience rather than a catalog.
