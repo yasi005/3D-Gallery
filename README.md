@@ -1,74 +1,79 @@
-# Sable — a small gallery
+# Sable
 
-A scroll-driven art gallery built with Next.js, React Three Fiber, GSAP, and Lenis. Includes a walkable 3D room with generative ambient audio.
+A small gallery of quiet things.
 
-## Stack
+Soft light, slow rooms, paintings that ask you to linger. Scroll through an editorial sequence of frames, then step into a walkable 3D room — footsteps on hard floors, ambient sound in the plaster, placards you can lean in to read.
 
-- Next.js 16 (App Router)
-- React 19 + Three.js (`@react-three/fiber` / `drei`)
-- GSAP + Lenis for scroll motion
+Built as a short, warm experience rather than a catalog.
 
-## Local development
+---
 
-Requirements: **Node.js 20.9+**
+## Run it locally
+
+Node **20.9** or newer.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [localhost:3000](http://localhost:3000). Scroll gently.
 
 ```bash
-npm run build   # production build
-npm run start   # serve the build
+npm run build && npm start   # production
 npm run lint
 ```
 
-## Deploy on Vercel
+---
 
-1. Push this repo to GitHub.
-2. Import the project at [vercel.com/new](https://vercel.com/new).
-3. Leave the framework preset as **Next.js** (auto-detected).
-4. No environment variables are required for the default demo.
-5. Deploy.
+## Deploy
 
-Optional: install the [Vercel CLI](https://vercel.com/docs/cli) and run `vercel` from the project root.
+This is a standard Next.js app. Import the repo on [Vercel](https://vercel.com/new), keep the Next.js preset, and deploy. No environment variables are required for the demo as it stands.
 
-## Content & licensing
+---
 
-### Images
+## What’s inside
 
-Sample artworks are **public-domain** paintings hotlinked from Wikimedia Commons (see `src/data/gallery.ts` and `next.config.ts`). Credits appear in the outro.
+| | |
+|---|---|
+| **Scroll scenes** | Hero frames, a distortion gallery, a horizontal strip, a feature card |
+| **The room** | A first-person gallery you can walk — inspect works, open doors, change the light |
+| **Sound** | Generative ambient tracks, footsteps, soft UI chimes |
+| **Motion** | GSAP + Lenis, with reduced-motion respected |
 
-For a production site, prefer downloading the files you need and serving them from `public/images/` (or a CDN) instead of hotlinking.
+Stack: Next.js 16, React 19, React Three Fiber, GSAP, Lenis.
 
-### Music
+---
 
-The room falls back to **generative ambient tracks** when no song files are present.
+## Making it yours
 
-To add your own playlist:
+**Images** live in `src/data/gallery.ts`. The sample set is public-domain painting via Wikimedia Commons — fine for a demo; for something lasting, drop files into `public/images/` and point `src` there.
 
-1. Put licensed audio in `public/music/` (that folder is gitignored except `.gitkeep`).
-2. List tracks in `src/data/playlist.ts`.
+**Music** is optional. Add licensed audio under `public/music/` and list it in `src/data/playlist.ts`. That folder is gitignored on purpose — don’t commit recordings you don’t have the rights to share. With an empty playlist, the room keeps its built-in ambient pieces.
 
-**Do not commit or deploy copyrighted recordings** unless you have redistribution rights.
+---
 
-## Project layout
+## Layout
 
 ```
-src/
-  app/           # Next.js routes & global styles
-  components/    # UI + page sections
-  data/          # gallery images & playlist
-  lib/           # scroll, audio helpers
-  webgl/         # Three.js scene
-public/
-  images/        # optional local artwork
-  music/         # optional licensed audio (gitignored)
+src/app/          routes & global styles
+src/components/   page sections & UI
+src/data/         gallery + playlist
+src/lib/          scroll & audio
+src/webgl/        the 3D room
+public/images/    your own artwork (optional)
+public/music/     your own audio (optional, ignored by git)
 ```
+
+---
 
 ## License
 
+<<<<<<< HEAD
 Source code is MIT — see [LICENSE](./LICENSE). Sample images remain under their original public-domain status via Wikimedia Commons. 
 
+=======
+Code is [MIT](./LICENSE).
+
+The sample paintings remain public domain, via Wikimedia Commons. Any audio you add keeps whatever license it arrived with — that part is on you.
+>>>>>>> b59445e (update read me)
