@@ -37,7 +37,32 @@ html {
   background: var(--page);
   color: var(--ink);
   scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--clay) transparent;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Thin clay scrollbar — WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clay);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-soft);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 html.is-loading {

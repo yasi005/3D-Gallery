@@ -17,6 +17,19 @@ const PLACEMENT = [
   { col: "9 / span 3", shift: "-2vh" },
 ];
 
+/** Split text into words that ink in with scroll (same effect as section 01). */
+function Ink({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(" ").map((w, i) => (
+        <span key={i}>
+          <span className={styles.ink}>{w}</span>{" "}
+        </span>
+      ))}
+    </>
+  );
+}
+
 function Figure({ item, index }: { item: GalleryItem; index: number }) {
   const ref = useGlTarget(`gallery-${item.id}`, "plane", item);
   const place = PLACEMENT[index % PLACEMENT.length];
@@ -35,8 +48,10 @@ function Figure({ item, index }: { item: GalleryItem; index: number }) {
       </div>
       {item.caption && (
         <figcaption className={styles.caption}>
-          <span className="label">{String(index + 1).padStart(2, "0")}</span>
-          <span className={styles.captionText}>{item.caption}</span>
+          <span className={`label ${styles.ink}`}>{String(index + 1).padStart(2, "0")}</span>
+          <span className={styles.captionText}>
+            <Ink text={item.caption} />
+          </span>
         </figcaption>
       )}
     </figure>
@@ -48,18 +63,24 @@ export default function Gallery() {
 
   useScrollScene(root, ({ reduced }) => {
     const el = root.current!;
+    // Words come into focus and ink in one by one as you scroll (and fade
+    // back out when you scroll up) — the heading, then each caption.
+    const inkIn = (words: Element[], trigger: Element, start: string, end: string) => {
+      if (reduced) {
+        gsap.set(words, { "--p": 1 });
+        return;
+      }
+      gsap.to(words, {
+        "--p": 1,
+        ease: "none",
+        stagger: 0.12,
+        scrollTrigger: { trigger, start, end, scrub: 0.5 },
+      });
+    };
+    const title = el.querySelector(`.${styles.title}`)!;
+    inkIn(gsap.utils.toArray(`.${styles.ink}`, title), title, "top 85%", "top 40%");
     gsap.utils.toArray<HTMLElement>(`.${styles.caption}`, el).forEach((cap) => {
-      gsap.fromTo(
-        cap,
-        { autoAlpha: 0, y: reduced ? 0 : 24 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: reduced ? 0.6 : 1.4,
-          ease: "expo.out",
-          scrollTrigger: { trigger: cap, start: "top 92%" },
-        },
-      );
+      inkIn(gsap.utils.toArray(`.${styles.ink}`, cap), cap, "top 98%", "top 72%");
     });
     // Placeholder labels appear once the WebGL sheet has mostly unfolded.
     gsap.utils.toArray<HTMLElement>(`.${styles.media}`, el).forEach((media) => {
@@ -77,7 +98,7 @@ export default function Gallery() {
       );
     });
     gsap.fromTo(
-      el.querySelector(`.${styles.head}`),
+      el.querySelector(`.${styles.head} .label`),
       { autoAlpha: 0, y: reduced ? 0 : 30 },
       { autoAlpha: 1, y: 0, duration: 1.4, scrollTrigger: { trigger: el, start: "top 75%" } },
     );
@@ -88,7 +109,10 @@ export default function Gallery() {
       <header className={styles.head}>
         <p className="label">(02) — Selected</p>
         <h2 id="gallery-title" className={styles.title} data-skew>
-          Things we <em>kept</em>
+          <Ink text="Things we" />
+          <em>
+            <span className={styles.ink}>kept</span>
+          </em>
         </h2>
       </header>
       <div className={styles.grid}>

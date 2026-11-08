@@ -44,7 +44,6 @@
   align-items: baseline;
   gap: 0.9rem;
   margin-top: 0.9rem;
-  visibility: hidden;
 }
 
 .captionText {
@@ -70,5 +69,23 @@
   }
   .figure:nth-child(even) {
     grid-column: 2 / span 5;
+  }
+}
+
+/* --p: 0 → 1 as you scroll (driven by GSAP), like section 01 */
+.ink {
+  --p: 0;
+  display: inline-block;
+  color: color-mix(in srgb, currentColor calc(var(--p) * 100%), var(--ink-soft));
+  opacity: calc(0.25 + var(--p) * 0.75);
+  filter: blur(calc((1 - var(--p)) * 5px));
+  transform: translateY(calc((1 - var(--p)) * 0.18em));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink {
+    --p: 1;
+    filter: none;
+    transform: none;
   }
 }

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import { roomExhibit, type GalleryItem } from "@/data/gallery";
-import { motion, wake } from "@/lib/lenis";
+import { motion, onReady, wake } from "@/lib/lenis";
 import { roomAudio } from "@/lib/roomAudio";
 import { useDomRect, type GlTarget } from "@/lib/useDomRect";
 import type { Layer } from "./Scene";
@@ -274,6 +274,24 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
     return c;
   }, []);
   const [near, setNear] = useState(false);
+  // Don't wait for the visitor to scroll near: start loading the room in idle
+  // time shortly after the page appears, so it's ready long before section 04.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let idle: number | undefined;
+    const off = onReady(() => {
+      timer = setTimeout(() => {
+        const go = () => setNear(true);
+        if ("requestIdleCallback" in window) idle = window.requestIdleCallback(go, { timeout: 3000 });
+        else go();
+      }, 1800);
+    });
+    return () => {
+      off();
+      clearTimeout(timer);
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+    };
+  }, []);
 
   // Shared geometry / materials: everything is a scaled unit box or plane.
   const shared = useMemo(() => {
@@ -402,6 +420,10 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
           /* keep the placeholder */
         }
       }
+      if (!cancelled) {
+        ready.current.loadedAll = true;
+        wake(0.3);
+      }
     })();
     return () => {
       cancelled = true;
@@ -410,7 +432,7 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
 
   // Compile every shader before the room scrolls into view.
   const compiled = useRef(false);
-  const ready = useRef({ compiled: false, uploaded: 0 });
+  const ready = useRef({ compiled: false, uploaded: 0, loadedAll: false });
   useEffect(() => {
     if (!near || compiled.current) return;
     compiled.current = true;
@@ -496,6 +518,10 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
       h = H;
       w = H * aspect;
     }
+    // a poster doesn't need the full screen: cap it (cheaper render + readback)
+    const cap = Math.min(1, 1280 / (w * gl.getPixelRatio()));
+    w = Math.floor(w * cap);
+    h = Math.floor(h * cap);
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
     camera.position.set(0, EYE, BACK - 1.3);
@@ -508,7 +534,7 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
     const pr = gl.getPixelRatio();
     const sw = Math.floor(w * pr);
     const sh = Math.floor(h * pr);
-    const outW = Math.min(sw, 1600);
+    const outW = sw;
     const outH = Math.round(outW / aspect);
     const { c, ctx } = canvas(outW, outH);
     ctx.drawImage(gl.domElement, 0, gl.domElement.height - sh, sw, sh, 0, 0, outW, outH);
@@ -547,7 +573,7 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
     }
 
     // One texture upload per frame, so arriving images never stack up.
-    const next = uploads.current.shift();
+    const next = Math.abs(motion.velocity) < 0.06 ? uploads.current.shift() : undefined;
     if (next) {
       const f = frames[next.index];
       gl.initTexture(next.texture);
@@ -559,16 +585,15 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
         f.art.color.setScalar(ART_IDLE);
       }
       ready.current.uploaded++;
-      // re-shoot the still once the first view is hung, and when all are
-      const total = frames.filter((x) => x.item.src).length;
-      if (ready.current.uploaded === Math.min(5, total) || ready.current.uploaded === total) {
-        motion.roomPoster.dirty = true;
-      }
       if (uploads.current.length) wake(0.2);
     }
 
     if (!live) {
-      if (motion.roomPoster.dirty && ready.current.compiled && labels) shoot();
+      // One still, once everything is hung (and again only if the box changes shape).
+      const r = ready.current;
+      if (motion.roomPoster.dirty && r.compiled && r.loadedAll && !uploads.current.length && labels && Math.abs(motion.velocity) < 0.06) {
+        shoot();
+      } else if (r.loadedAll && uploads.current.length) wake(0.2);
       return;
     }
 
