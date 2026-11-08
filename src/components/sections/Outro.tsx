@@ -63,6 +63,13 @@ export default function Outro() {
           for walking slowly. The kettle&apos;s still warm — stay a while.
         </p>
       </div>
+      <footer className={styles.footer}>
+        <span>© 2026 Yazmin</span>
+        <span aria-hidden>·</span>
+        <a href="https://yazmin.dev" target="_blank" rel="noopener" className={styles.made}>
+          made by <span>yazmin.dev</span>
+        </a>
+      </footer>
     </section>
   );
 }

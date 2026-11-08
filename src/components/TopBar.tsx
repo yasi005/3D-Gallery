@@ -39,9 +39,9 @@ export default function TopBar() {
     <>
       <header className={styles.bar}>
         <a href="#top" className={`label ${styles.name}`}>
-          Sable<span className={styles.mark}>✦</span>
+          Yazmin<span className={styles.mark}>✦</span>
         </a>
-        <a href="mailto:hello@example.com" className={`label ${styles.link}`}>
+        <a href="https://yazmin.dev" target="_blank" rel="noopener" className={`label ${styles.link}`}>
           Say hello
         </a>
       </header>

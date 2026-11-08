@@ -116,14 +116,6 @@ export function ImagePlane({ target }: { target: GlTarget }) {
   }, [item]);
   const hover = useRef({ value: 0, target: 0, mx: 0.5, my: 0.5 });
   const [near, setNear] = useState(false);
-  const revealed = useRef(motion.reduced);
-
-  useEffect(() => {
-    const u = material.uniforms.uReveal;
-    return () => {
-      gsap.killTweensOf(u);
-    };
-  }, [material]);
 
   // Hover is read from the DOM box: the canvas sits behind the page.
   useEffect(() => {
@@ -172,15 +164,21 @@ export function ImagePlane({ target }: { target: GlTarget }) {
     );
     m.scale.set(rect.width, rect.height, rect.height);
 
-    // Unfold once, when the box is well inside the viewport.
-    if (!revealed.current && motion.ready && rect.y < size.height * 0.85) {
-      revealed.current = true;
-      gsap.to(material.uniforms.uReveal, {
-        value: 1,
-        duration: 2.2,
-        ease: "power3.inOut",
-        onUpdate: () => wake(0.1),
-      });
+    // Scroll-scrubbed unfold: opens as the plane rises into view, curls
+    // back when you scroll up — same reversible feel as the hero letters.
+    const uReveal = material.uniforms.uReveal;
+    if (motion.reduced || !motion.ready) {
+      uReveal.value = motion.reduced ? 1 : uReveal.value;
+    } else {
+      const start = size.height * 0.95;
+      const end = size.height * 0.42;
+      const raw = THREE.MathUtils.clamp((start - rect.y) / (start - end), 0, 1);
+      const target = raw * raw * (3 - 2 * raw);
+      const next = uReveal.value + (target - uReveal.value) * Math.min(1, delta * 3.2);
+      if (Math.abs(next - uReveal.value) > 0.0005) {
+        uReveal.value = next;
+        wake(0.1);
+      }
     }
 
     const h = hover.current;

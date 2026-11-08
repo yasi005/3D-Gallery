@@ -16,7 +16,7 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sable — a small gallery",
+  title: "Yazmin — a small gallery",
   description: "A short, warm, scroll-driven gallery.",
 };
 

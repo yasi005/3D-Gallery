@@ -31,6 +31,8 @@ const BODY = 0.35; // visitor radius for collisions
 const WALK = 2.2;
 const RUN = 4.4;
 const LOOK_SENS = 0.0022;
+/** how quickly the view catches up with the mouse (per second) */
+const LOOK_SMOOTH = 18;
 
 // Palette: warm charcoal walls, dark walnut floor, ivory mats.
 const WALL = "#5A4E45";
@@ -483,6 +485,9 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
     vel: new THREE.Vector3(),
     yaw: 0,
     pitch: 0.02,
+    /** where the mouse wants the view; yaw/pitch glide to it every frame */
+    aimYaw: 0,
+    aimPitch: 0.02,
     bob: 0,
     lastStep: 0,
     time: 0,
@@ -656,8 +661,8 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
       // next visit starts back at the entrance
       st.pos.set(0, EYE, BACK - 1.3);
       st.vel.set(0, 0, 0);
-      st.yaw = 0;
-      st.pitch = 0.02;
+      st.yaw = st.aimYaw = 0;
+      st.pitch = st.aimPitch = 0.02;
     }
     st.door += ((st.leaveAt >= 0 ? 1 : 0) - st.door) * ease(delta, st.leaveAt >= 0 ? 4 : 2);
     if (leftLeaf.current) leftLeaf.current.rotation.y = -1.25 * st.door;
@@ -665,10 +670,15 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
 
     st.focusMix += ((st.focus >= 0 ? 1 : 0) - st.focusMix) * ease(delta, 3);
 
-    // Mouse look (ignored while inspecting)
+    // Mouse look (ignored while inspecting): the mouse moves an aim point and
+    // the view glides to it — fast enough to feel direct, smooth enough that
+    // uneven frames and jittery mouse events don't show as steps.
     if (st.focus < 0) {
-      st.yaw -= input.look.x * LOOK_SENS;
-      st.pitch = THREE.MathUtils.clamp(st.pitch - input.look.y * LOOK_SENS, -1.2, 1.2);
+      st.aimYaw -= input.look.x * LOOK_SENS;
+      st.aimPitch = THREE.MathUtils.clamp(st.aimPitch - input.look.y * LOOK_SENS, -1.2, 1.2);
+      const e = ease(delta, LOOK_SMOOTH);
+      st.yaw += (st.aimYaw - st.yaw) * e;
+      st.pitch += (st.aimPitch - st.pitch) * e;
     }
     input.look.x = 0;
     input.look.y = 0;
@@ -679,6 +689,9 @@ export default function Room({ target, layer }: { target: GlTarget; layer: RefOb
       st.pos.lerp(goal, e);
       st.yaw += angleTo(st.yaw, st.focusYaw) * e;
       st.pitch += (st.focusPitch - st.pitch) * e;
+      // stepping back resumes from here, without a jump
+      st.aimYaw = st.yaw;
+      st.aimPitch = st.pitch;
       st.vel.set(0, 0, 0);
     } else {
       // Walk: accelerate toward the held direction, glide to a stop on release.

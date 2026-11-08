@@ -145,6 +145,7 @@ export default function Scene() {
     if (!env.ok) {
       setWebgl("off");
       motion.loaded.canvas = 1;
+      motion.loaded.textures = 1;
     }
   }, [env]);
 

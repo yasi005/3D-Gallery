@@ -82,25 +82,36 @@ export default function Gallery() {
     gsap.utils.toArray<HTMLElement>(`.${styles.caption}`, el).forEach((cap) => {
       inkIn(gsap.utils.toArray(`.${styles.ink}`, cap), cap, "top 98%", "top 72%");
     });
-    // Placeholder labels appear once the WebGL sheet has mostly unfolded.
+    // Placeholder labels + section kicker scrub with scroll (reverse on the way up).
     gsap.utils.toArray<HTMLElement>(`.${styles.media}`, el).forEach((media) => {
       const tag = media.querySelector("[aria-hidden]");
       if (!tag) return;
+      if (reduced) {
+        gsap.set(tag, { autoAlpha: 1 });
+        return;
+      }
       gsap.fromTo(
         tag,
         { autoAlpha: 0 },
         {
           autoAlpha: 1,
-          duration: 1,
-          delay: reduced ? 0 : 1.2,
-          scrollTrigger: { trigger: media, start: "top 85%" },
+          ease: "none",
+          scrollTrigger: { trigger: media, start: "top 90%", end: "top 55%", scrub: 0.5 },
         },
       );
     });
     gsap.fromTo(
       el.querySelector(`.${styles.head} .label`),
-      { autoAlpha: 0, y: reduced ? 0 : 30 },
-      { autoAlpha: 1, y: 0, duration: 1.4, scrollTrigger: { trigger: el, start: "top 75%" } },
+      { autoAlpha: 0, y: reduced ? 0 : 24 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        ease: reduced ? "power2.out" : "none",
+        duration: reduced ? 1 : undefined,
+        scrollTrigger: reduced
+          ? { trigger: el, start: "top 75%" }
+          : { trigger: el, start: "top 85%", end: "top 55%", scrub: 0.5 },
+      },
     );
   });
 

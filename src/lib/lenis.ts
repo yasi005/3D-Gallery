@@ -30,8 +30,8 @@ export const motion = {
   mobile: false,
   ready: false,
   webgl: "pending" as "pending" | "on" | "off",
-  /** preloader inputs, each 0..1 */
-  loaded: { fonts: 0, canvas: 0, textures: 1 },
+  /** preloader inputs, each 0..1 — textures stay 0 until the WebGL bridge reports */
+  loaded: { fonts: 0, canvas: 0, textures: 0 },
   /** hero fly-through progress 0..1 */
   hero: 0,
   heroVisible: true,

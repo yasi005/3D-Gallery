@@ -348,15 +348,28 @@ export default function Room() {
         lockFailed = true;
         return;
       }
-      try {
-        const p = el.requestPointerLock() as Promise<void> | undefined;
-        p?.catch?.(() => {
-          lockFailed = true;
-          setCursorFree(true);
-        });
-      } catch {
+      const failed = () => {
         lockFailed = true;
         setCursorFree(true);
+      };
+      // Raw mouse input (no OS acceleration) where supported: steadier turning.
+      type Lock = (o?: { unadjustedMovement?: boolean }) => Promise<void> | undefined;
+      const request = el.requestPointerLock.bind(el) as Lock;
+      try {
+        const p = request({ unadjustedMovement: true });
+        p?.catch?.(() => {
+          try {
+            request()?.catch?.(failed);
+          } catch {
+            failed();
+          }
+        });
+      } catch {
+        try {
+          request()?.catch?.(failed);
+        } catch {
+          failed();
+        }
       }
     };
 
@@ -429,6 +442,9 @@ export default function Room() {
       if (!input.active) return;
       if (down) down.moved += Math.abs(e.movementX) + Math.abs(e.movementY);
       if (!locked && !(e.buttons & 1 && down)) return;
+      // Browsers occasionally report a huge bogus jump under pointer lock
+      // (it spins the view on its own): drop those single events.
+      if (Math.abs(e.movementX) > 220 || Math.abs(e.movementY) > 220) return;
       input.look.x += e.movementX;
       input.look.y += e.movementY;
     };
