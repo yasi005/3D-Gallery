@@ -767,6 +767,73 @@
   }
 }
 
+/* Phones: frames hang a little off-centre, alternating sides of the hall */
+@media (max-width: 599px) {
+  .stack {
+    gap: 9vh;
+  }
+  .stackItem {
+    width: 88%;
+  }
+  .stackMedia {
+    outline-width: 8px;
+    box-shadow:
+      0 0 0 9px #0f0d0c,
+      0 30px 60px -30px rgb(0 0 0 / 0.6);
+    margin: 10px;
+  }
+  .stackCaption {
+    padding-left: 10px;
+  }
+}
+
+/* Tablets: a salon wall — two columns, the right one hung lower */
+@media (min-width: 600px) and (max-width: 768px), (min-width: 600px) and (hover: none) {
+  .stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 4vw, 3.5rem);
+    row-gap: 8vh;
+    align-items: start;
+    max-width: 72rem;
+    margin-inline: auto;
+  }
+  .stackItem,
+  .stackItem:nth-child(even) {
+    width: 100%;
+    justify-self: stretch;
+  }
+  .stackItem:nth-child(even) {
+    margin-top: 14vh;
+  }
+}
+
+/* honest note on touch screens: the 3D hall needs a mouse + keyboard */
+.touchNote {
+  display: none;
+}
+
+@media (max-width: 768px), (hover: none), (prefers-reduced-motion: reduce) {
+  .touchNote {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.95rem;
+    border: 1px solid rgb(59 48 42 / 0.16);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  .touchNote::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #9c7656;
+  }
+}
+
 /* mobile list sits on the light page */
 .stackCaption .frameBy {
   color: var(--ink-soft);

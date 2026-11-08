@@ -13,6 +13,11 @@
 
   --display: clamp(4rem, 12vw, 12rem);
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  /* notch / home-indicator insets (viewport-fit=cover) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
   --radius: 18px;
   --radius-lg: 24px;
 
@@ -71,6 +76,7 @@ html.is-loading {
 
 body {
   min-height: 100vh;
+  overflow-x: clip;
   font-family: var(--sans);
   font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
   line-height: 1.6;
@@ -86,6 +92,7 @@ canvas {
 }
 
 button {
+  -webkit-tap-highlight-color: transparent;
   font: inherit;
   color: inherit;
   background: none;

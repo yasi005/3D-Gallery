@@ -22,6 +22,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#EDE4DA",
+  // draw under the notch / home bar; the edges are padded with safe-area insets
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -50,7 +50,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 1.5rem;
+  bottom: calc(1.5rem + var(--safe-bottom));
   display: grid;
   justify-items: center;
   gap: 0.6rem;

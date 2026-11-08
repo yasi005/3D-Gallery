@@ -92,12 +92,26 @@
   top: 0;
   z-index: 60;
   pointer-events: none;
-  display: none;
 }
 
-@media (hover: hover) and (min-width: 769px) {
-  .pops {
-    display: block;
+/* Touch: key words wear a dotted underline — tap one for its polaroid */
+@media (max-width: 768px), (hover: none) {
+  .key {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: underline dotted color-mix(in srgb, var(--clay) calc(var(--p) * 70%), transparent);
+    text-decoration-thickness: 0.05em;
+    text-underline-offset: 0.16em;
+    transition: color 0.3s, translate 0.45s var(--ease-out);
+  }
+
+  .lit {
+    color: var(--clay);
+    translate: 0 -0.06em;
+  }
+
+  .card {
+    width: min(180px, 46vw);
   }
 }
 

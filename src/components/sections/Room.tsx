@@ -190,11 +190,20 @@ export default function Room() {
 
     // Mobile & reduced motion get the vertical stack instead (CSS).
     if (!desktop || reduced) {
-      gsap.utils.toArray<HTMLElement>(`.${styles.stackItem}`, el).forEach((item) =>
+      gsap.utils.toArray<HTMLElement>(`.${styles.stackItem}`, el).forEach((item, i) =>
+        // each work is hung on the wall: it drops in slightly askew, then settles
         gsap.fromTo(
           item,
-          { autoAlpha: 0, y: reduced ? 0 : 30 },
-          { autoAlpha: 1, y: 0, scrollTrigger: { trigger: item, start: "top 88%" } },
+          { autoAlpha: 0, y: reduced ? 0 : 40, rotate: reduced ? 0 : i % 2 ? 2.5 : -2.5 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            rotate: 0,
+            duration: 1.4,
+            ease: "elastic.out(1, 0.75)",
+            transformOrigin: "50% 0%",
+            scrollTrigger: { trigger: item, start: "top 88%" },
+          },
         ),
       );
       return;
@@ -529,6 +538,7 @@ export default function Room() {
           Walk <em>through</em>
         </h2>
         <p className={styles.lede}>Thirteen works, one long hall. Put your headphones on.</p>
+        <p className={styles.touchNote}>The walkable 3D hall opens on a computer</p>
       </header>
 
       {/* preview: a still of the hall; the live room only runs once you step in */}

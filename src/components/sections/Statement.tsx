@@ -51,6 +51,66 @@ export default function Statement() {
   const pin = useRef<HTMLDivElement>(null);
   const popLayer = useRef<HTMLDivElement>(null);
 
+  // Touch screens: tap a key word and its polaroid pops up above it; tap
+  // again, tap elsewhere or scroll to put it away.
+  useScrollScene(root, ({ reduced }) => {
+    if (matchMedia(DESKTOP_QUERY).matches) return;
+    const layer = popLayer.current!;
+    const words = root.current!.querySelectorAll<HTMLElement>("[data-pop]");
+    const cards = new Map<string, HTMLElement>();
+    layer.querySelectorAll<HTMLElement>("[data-card]").forEach((c) => cards.set(c.dataset.card!, c));
+    let current: string | null = null;
+    let scrollAt = 0;
+
+    const hide = () => {
+      if (!current) return;
+      const card = cards.get(current)!;
+      gsap.to(card, { autoAlpha: 0, scale: 0.7, y: 12, duration: reduced ? 0.01 : 0.3, ease: "power2.in", overwrite: true });
+      words.forEach((w) => w.classList.remove(styles.lit));
+      current = null;
+    };
+    const show = (word: HTMLElement) => {
+      const key = word.dataset.pop!;
+      if (current === key) return hide();
+      hide();
+      current = key;
+      scrollAt = window.scrollY;
+      words.forEach((w) => w.classList.toggle(styles.lit, w.dataset.pop === key));
+      const r = word.getBoundingClientRect();
+      const below = r.top < 300;
+      layer.classList.toggle(styles.below, below);
+      const half = Math.min(110, window.innerWidth / 2 - 8);
+      gsap.set(layer, {
+        x: gsap.utils.clamp(half + 8, window.innerWidth - half - 8, r.left + r.width / 2),
+        y: below ? r.bottom + 14 : r.top - 10,
+      });
+      const card = cards.get(key)!;
+      const tilt = Number(card.dataset.tilt);
+      if (reduced) gsap.set(card, { autoAlpha: 1, scale: 1, rotate: tilt, y: 0 });
+      else
+        gsap.fromTo(
+          card,
+          { autoAlpha: 0, scale: 0.4, rotate: 0, y: below ? -20 : 30 },
+          { autoAlpha: 1, scale: 1, rotate: tilt, y: 0, duration: 0.7, ease: "back.out(2.2)", overwrite: true },
+        );
+    };
+    const onTap = (e: Event) => {
+      const word = (e.target as HTMLElement | null)?.closest?.<HTMLElement>("[data-pop]");
+      if (word && root.current!.contains(word)) show(word);
+      else hide();
+    };
+    const onScroll = () => {
+      if (current && Math.abs(window.scrollY - scrollAt) > 40) hide();
+    };
+    document.addEventListener("click", onTap);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      hide();
+      document.removeEventListener("click", onTap);
+      window.removeEventListener("scroll", onScroll);
+    };
+  });
+
   // Hover pop-ups (desktop only): a card per key word, following the cursor.
   useScrollScene(root, () => {
     if (!matchMedia(DESKTOP_QUERY).matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;

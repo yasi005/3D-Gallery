@@ -28,7 +28,35 @@ export default function HorizontalStrip() {
     );
 
     // Mobile & reduced motion: a native swipeable row (see CSS).
-    if (!desktop || reduced) return;
+    if (reduced) return;
+    if (!desktop) {
+      // Frames still straighten and lift as you swipe them to the centre.
+      const row = track.current!;
+      const rotate = items.map((el) => gsap.quickTo(el, "rotation", { duration: 0.5, ease: "power3.out" }));
+      const lift = items.map((el) => gsap.quickTo(el, "y", { duration: 0.5, ease: "power3.out" }));
+      let frame = 0;
+      const settle = () => {
+        frame = 0;
+        const center = window.innerWidth / 2;
+        items.forEach((el, i) => {
+          const r = el.getBoundingClientRect();
+          const d = Math.min(1, Math.abs(r.left + r.width / 2 - center) / center);
+          rotate[i](TILTS[i % TILTS.length] * d);
+          lift[i](d * 18);
+        });
+      };
+      const onScroll = () => {
+        if (!frame) frame = requestAnimationFrame(settle);
+      };
+      settle();
+      row.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      return () => {
+        cancelAnimationFrame(frame);
+        row.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      };
+    }
 
     const distance = () => track.current!.scrollWidth - window.innerWidth;
     const rotate = items.map((el) => gsap.quickSetter(el, "rotate", "deg"));
@@ -85,6 +113,9 @@ export default function HorizontalStrip() {
           <h2 id="strip-title" className={styles.title} data-skew>
             Little <em>things</em>, in a row
           </h2>
+          <p className={`label ${styles.swipe}`} aria-hidden>
+            Swipe
+          </p>
         </header>
         <ul ref={track} className={styles.track} tabIndex={0} aria-label="Archive, scroll sideways">
           {stripFrames.map((item, i) => (

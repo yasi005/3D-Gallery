@@ -102,3 +102,42 @@
 :global(html.is-exploring) .progress {
   opacity: 0;
 }
+
+/* ---- phones & tablets ---- */
+@media (max-width: 1024px), (hover: none) {
+  .bar {
+    padding-top: calc(1.1rem + var(--safe-top));
+    padding-left: calc(var(--gutter) + var(--safe-left));
+    padding-right: calc(var(--gutter) + var(--safe-right));
+  }
+
+  /* a soft wash of the page colour, so text scrolling under the bar fades out */
+  .bar::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -1.75rem;
+    z-index: -1;
+    background: linear-gradient(var(--page) 40%, color-mix(in srgb, var(--page) 70%, transparent) 65%, transparent);
+    pointer-events: none;
+  }
+
+  /* the counter climbs up into the bar instead of sitting over the content */
+  .progress {
+    top: calc(1.1rem + var(--safe-top));
+    bottom: auto;
+    left: 50%;
+    gap: 0.6rem;
+    height: calc(0.75rem * 1.4);
+    transform: translateX(-50%);
+  }
+
+  .track {
+    width: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .track {
+    display: none;
+  }
+}
