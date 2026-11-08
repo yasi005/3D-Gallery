@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a3c34"/>
+      <stop offset="1" stop-color="#2e2520"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6e3cc"/>
+      <stop offset="1" stop-color="#c9a891"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  <!-- the gallery's sparkle -->
+  <path d="M30 9 C31.8 23 37 28.2 51 30 C37 31.8 31.8 37 30 51 C28.2 37 23 31.8 9 30 C23 28.2 28.2 23 30 9 Z" fill="url(#star)"/>
+  <!-- a tiny twinkle -->
+  <path d="M49 42 C49.5 46 50.6 47.1 54.5 47.5 C50.6 48 49.5 49 49 53 C48.5 49 47.4 48 43.5 47.5 C47.4 47.1 48.5 46 49 42 Z" fill="#f6e3cc"/>
+</svg>

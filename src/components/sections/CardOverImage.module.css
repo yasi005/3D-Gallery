@@ -1,0 +1,79 @@
+.feature {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 34rem;
+  display: grid;
+  align-items: end;
+  padding: var(--gutter);
+  overflow: hidden;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: inset(14% 18% 14% 18% round 28px);
+}
+
+.zoom {
+  position: absolute;
+  inset: -6% 0;
+  will-change: transform;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 26rem);
+  margin-left: auto;
+  padding: 2rem 2rem 2.25rem;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: 0 40px 80px -40px rgb(59 48 42 / 0.45);
+  visibility: hidden;
+  transform-origin: 50% 100%;
+}
+
+.heart {
+  color: var(--rose);
+  transform-origin: 50% 60%;
+}
+
+.card:hover .heart {
+  animation: beat 1.2s var(--ease-out) infinite;
+}
+
+@keyframes beat {
+  0%, 40%, 100% { transform: scale(1); }
+  15% { transform: scale(1.28); }
+  28% { transform: scale(0.95); }
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  line-height: 1;
+}
+
+.title em {
+  font-style: italic;
+}
+
+.body {
+  max-width: 38ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media {
+    clip-path: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    margin: 0 auto;
+    padding: 1.6rem;
+  }
+}

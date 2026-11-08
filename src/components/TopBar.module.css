@@ -1,0 +1,104 @@
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem var(--gutter);
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.bar a {
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.mark {
+  display: inline-block;
+  margin-left: 0.4em;
+  font-size: 0.9em;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.name:hover .mark {
+  transform: rotate(180deg);
+}
+
+.link {
+  position: relative;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.progress {
+  position: fixed;
+  left: var(--gutter);
+  bottom: 1.25rem;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  position: relative;
+  width: 72px;
+  height: 1px;
+  background: rgb(59 48 42 / 0.2);
+  overflow: hidden;
+}
+
+.line {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Over the dark room: light ink; hidden while walking */
+.bar,
+.progress {
+  transition: color 0.6s, opacity 0.6s;
+}
+
+:global(html.room-dark) .bar,
+:global(html.room-dark) .progress {
+  color: #efe6db;
+}
+
+:global(html.room-dark) .track {
+  background: rgb(239 230 219 / 0.25);
+}
+
+:global(html.room-dark) .line {
+  background: #efe6db;
+}
+
+:global(html.is-exploring) .bar,
+:global(html.is-exploring) .progress {
+  opacity: 0;
+}

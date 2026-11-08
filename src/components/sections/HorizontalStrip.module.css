@@ -1,0 +1,133 @@
+.strip {
+  position: relative;
+  overflow: hidden;
+}
+
+.pin {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 14vh 0 8vh;
+  overflow: hidden;
+}
+
+.wordWrap {
+  position: absolute;
+  top: 50%;
+  left: 20vw;
+  margin-top: -0.55em;
+  font-size: clamp(10rem, 34vw, 34rem);
+  pointer-events: none;
+  user-select: none;
+}
+
+.word {
+  position: relative;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1em;
+  line-height: 1;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--clay);
+}
+
+.wordFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgb(201 168 145 / 0.35);
+  clip-path: inset(0% 100% 0% 0%);
+}
+
+.head {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0 var(--gutter);
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 4.5vw, 4.25rem);
+  line-height: 0.95;
+}
+
+.title em {
+  font-style: italic;
+}
+
+.track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4.5rem);
+  width: max-content;
+  padding: 0 var(--gutter) 0 calc(var(--gutter) + 22vw);
+  list-style: none;
+  will-change: transform;
+}
+
+.track:focus-visible {
+  outline-offset: -6px;
+}
+
+.item {
+  flex: none;
+  transform: rotate(var(--tilt));
+}
+
+.media {
+  transition:
+    transform 0.9s var(--ease-out),
+    box-shadow 0.9s var(--ease-out);
+  height: var(--h);
+  aspect-ratio: var(--a);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgb(59 48 42 / 0.35);
+}
+
+.media:hover {
+  transform: translateY(-12px) scale(1.025);
+  box-shadow: 0 50px 80px -40px rgb(59 48 42 / 0.45);
+}
+
+.caption {
+  margin-top: 0.9rem;
+}
+
+/* Mobile + reduced motion: swipe instead of pin */
+@media (max-width: 768px), (hover: none), (prefers-reduced-motion: reduce) {
+  .pin {
+    height: auto;
+    padding: 14vh 0 10vh;
+    gap: 6vh;
+  }
+  .track {
+    width: auto;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 2rem var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+  .item {
+    scroll-snap-align: center;
+  }
+  .media {
+    height: min(var(--h), 62vh);
+  }
+  .wordWrap {
+    font-size: 40vw;
+    left: 0;
+  }
+  .wordFill {
+    display: none;
+  }
+}

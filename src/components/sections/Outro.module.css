@@ -1,0 +1,55 @@
+.outro {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  padding: 16vh var(--gutter);
+}
+
+.top {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.star {
+  width: 2.75rem;
+  height: auto;
+  color: var(--rose);
+}
+
+.title {
+  display: flex;
+  gap: 0.22em;
+}
+
+.mask {
+  display: inline-flex;
+  overflow: hidden;
+  padding: 0.05em 0.04em 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.char {
+  display: inline-block;
+}
+
+.em {
+  font-style: italic;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .char {
+    transform: translateY(120%);
+  }
+}
+
+.line {
+  max-width: 38ch;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.3;
+}

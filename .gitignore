@@ -22,7 +22,11 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
+.idea
+.vscode
+*.swp
 
 # debug
 npm-debug.log*
@@ -30,8 +34,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — keep .env.example for docs
+.env
+.env.*
+!.env.example
+
+# local / personal media (do not publish copyrighted audio)
+public/music/*
+!public/music/.gitkeep
 
 # vercel
 .vercel

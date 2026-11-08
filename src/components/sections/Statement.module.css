@@ -1,0 +1,162 @@
+.statement {
+  position: relative;
+}
+
+.pin {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 2.25rem;
+  padding: 6rem var(--gutter);
+  text-align: center;
+}
+
+.starSpin {
+  display: block;
+  line-height: 0;
+}
+
+.star {
+  width: clamp(2.5rem, 4vw, 3.5rem);
+  height: auto;
+  color: var(--clay);
+}
+
+.text {
+  max-width: 18ch;
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6.2vw, 6.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+/* --p: 0 → 1 as you scroll (driven by GSAP) */
+.word {
+  --p: 0;
+  display: inline-block;
+  color: color-mix(in srgb, var(--ink) calc(var(--p) * 100%), var(--ink-soft));
+  filter: blur(calc((1 - var(--p)) * 5px));
+  transform: translateY(calc((1 - var(--p)) * 0.18em));
+}
+
+.em {
+  font-style: italic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    filter: none;
+    transform: none;
+  }
+}
+
+/* ---- hover: key words + polaroid pop-ups (desktop) ---- */
+@media (hover: hover) {
+  .word {
+    transition: translate 0.45s var(--ease-out), color 0.3s;
+  }
+
+  .word:hover {
+    translate: 0 -0.08em;
+  }
+
+  /* key words: a soft hand-drawn underline that fills in on hover */
+  .key {
+    background-image: linear-gradient(var(--clay), var(--clay));
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 0% 0.07em;
+    transition:
+      translate 0.45s var(--ease-out),
+      background-size 0.55s var(--ease-out),
+      color 0.3s;
+    cursor: help;
+    text-decoration: underline dotted color-mix(in srgb, var(--clay) calc(var(--p) * 55%), transparent);
+    text-decoration-thickness: 0.05em;
+    text-underline-offset: 0.16em;
+  }
+
+  .lit {
+    color: var(--clay);
+    text-decoration-color: transparent;
+    background-size: 100% 0.07em;
+    translate: 0 -0.08em;
+  }
+}
+
+.pops {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  pointer-events: none;
+  display: none;
+}
+
+@media (hover: hover) and (min-width: 769px) {
+  .pops {
+    display: block;
+  }
+}
+
+.card {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  margin: 0;
+  padding: 9px 9px 12px;
+  background: #fbf7f1;
+  border-radius: 6px;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.8) inset,
+    0 18px 40px -12px rgb(40 30 24 / 0.45),
+    0 4px 10px -4px rgb(40 30 24 / 0.25);
+  transform-origin: 50% 100%;
+  visibility: hidden;
+  opacity: 0;
+  translate: -50% 0;
+}
+
+.below .card {
+  top: 0;
+  bottom: auto;
+  transform-origin: 50% 0;
+}
+
+.cardImg {
+  position: relative;
+  display: block;
+  max-height: 230px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #e6dbcf;
+}
+
+.cardImg img {
+  object-fit: cover;
+}
+
+.card figcaption {
+  display: grid;
+  gap: 2px;
+  padding-top: 9px;
+  text-align: left;
+}
+
+.cardNote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.cardBy {
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}

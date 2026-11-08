@@ -1,0 +1,94 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+
+.content {
+  display: grid;
+  justify-items: center;
+  gap: 2rem;
+}
+
+.title {
+  display: grid;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+  /* room for descenders / italics inside the mask */
+  padding: 0.04em 0.06em 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.scatter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.char {
+  display: inline-block;
+  will-change: transform;
+  transform: translateY(115%);
+}
+
+.em {
+  font-style: italic;
+}
+
+.intro {
+  opacity: 0;
+  max-width: 38ch;
+}
+
+.hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.5rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  opacity: 0;
+}
+
+.hintLine {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  overflow: hidden;
+  background: rgb(59 48 42 / 0.15);
+}
+
+.hintLine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: translateY(-100%);
+  animation: drip 2.4s var(--ease-out) infinite;
+}
+
+@keyframes drip {
+  0% { transform: translateY(-100%); }
+  60% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char {
+    transform: none;
+  }
+  .title {
+    opacity: 0;
+  }
+  .hintLine::after {
+    animation: none;
+    transform: none;
+  }
+}

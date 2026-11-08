@@ -1,0 +1,40 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.mask {
+  overflow: hidden;
+  padding: 0.05em 0.1em;
+}
+
+.count {
+  display: flex;
+  align-items: flex-start;
+  font-family: var(--serif);
+  font-size: clamp(6rem, 22vw, 18rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.pct {
+  font-style: italic;
+  font-size: 0.32em;
+  margin-top: 0.25em;
+  margin-left: 0.08em;
+  color: var(--ink-soft);
+}
+
+.caption {
+  position: absolute;
+  bottom: var(--gutter);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
