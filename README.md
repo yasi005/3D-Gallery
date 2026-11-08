@@ -5,7 +5,7 @@
 Sable is an atmospheric, scroll-driven art experience built for lingering. Move through a sequence of soft editorial scenes, watch paintings bend gently into view, and step inside a walkable 3D gallery where light, sound, and space become part of the exhibition.
 
 <p align="center">
-  <a href="https://gallery-tau-indol.vercel.app">
+  <a href="https://gallary.yazmin.dev">
     <strong>Visit the live gallery →</strong>
   </a>
 </p>
