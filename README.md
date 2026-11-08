@@ -70,4 +70,5 @@ public/
 
 ## License
 
-Source code is MIT — see [LICENSE](./LICENSE). Sample images remain under their original public-domain status via Wikimedia Commons. Third-party audio you add remains under *your* license terms.
+Source code is MIT — see [LICENSE](./LICENSE). Sample images remain under their original public-domain status via Wikimedia Commons. 
+
